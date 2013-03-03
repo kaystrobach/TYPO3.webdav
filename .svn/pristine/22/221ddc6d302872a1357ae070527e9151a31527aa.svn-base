@@ -1,0 +1,157 @@
+{namespace dav=Tx_Webdav_ViewHelpers}
+<html>
+	<head>
+		<title>Index for "{path} - SabreDAV {sabre.version}-{sabre.stability}</title>
+		<link media="screen" href="{extRoot}Resources/Public/Stylesheets/main.css" type="text/css" rel="stylesheet">
+		<meta http-equiv="content-Type" content="text/html; charset=UTF-8">
+	</head>
+	<body class="typo3-file-list-php">
+		<div id="typo3-top-container">
+			<div id="typo3-logo">
+				<a onclick="this.blur();" target="_blank" href="http://www.typo3.com/"><img alt="" title="TYPO3 Content Management Framework" src="{typo3Root}gfx/typo3logo_mini.png"></a>
+				<a onclick="this.blur();" target="_blank" href="http://code.google.com/p/sabredav/"><img alt="" title="sabredav - SabreDAV is a WebDAV framework for PHP" src="{extRoot}Resources/Contrib/SabreDavLogo/logo.png" /></a>
+				<a href="http://code.google.com/p/sabredav/" id="sabrelink">Generated with SabreDAV {sabre.version}-{sabre.stability}</a>
+			</div>
+		</div>
+		<div id="typo3-inner-docbody">
+			<h4 class="uppercase path">
+				<f:if condition="{path}">
+					<f:then>
+						Index for:  
+						<dav:breadcrumb path="{path}" base="{davRoot}" separator=" &raquo; "/>
+					</f:then>
+					<f:else>
+						Rootfolder
+					</f:else>
+				</f:if>
+
+			</h4>
+			<table id="typo3-filelist" cellpadding="3">
+				<colgroup>
+					<col width="20">
+					<col width="*">
+					<col width="100">
+					<col width="100">
+					<col width="200">
+				</colgroup>
+				<tr class="c-headLine">
+					<td class="col-icon">
+						<f:if condition="{path}">
+							<a href="..">
+								<img width="16" height="16" alt="" title="Eine Ebene höher gehen" src="{typo3Root}sysext/t3skin/icons/gfx/i/folder_up.gif">
+							</a>
+						</f:if>
+					</td><td>
+						Name
+					</td><td>
+						Type
+					</td><td>
+						Size
+					</td><td>
+						Last modified
+					</td>
+				</tr>
+
+				<f:for each="{files}" as="file">
+					<tr class="">
+						<td>
+							<a href="{file.fullpath}">
+								<img src="{file.icon}" alt='Icon'>
+							</a>
+						</td>
+						<td>
+							<a href="{file.fullpath}">
+								{file.name}
+							</a>
+						</td>
+						<td>
+							{file.type}
+						</td>
+						<td align="right">
+							<dav:filesize>{file.size}</dav:filesize>
+						</td>
+						<td>
+							{file.lastchange}
+						</td>
+					</tr>
+				</f:for>
+			</table>
+
+			<f:if condition="{path}">
+				<div style="width:360px; float:left;">
+					<form method="post" action="">
+						<input type="hidden" name="sabreAction" value="mkcol" />
+						<table width="350" cellspacing="1" cellpadding="0" border="0">
+							<colgroup>
+								<col width="10">
+								<col width="130">
+								<col width="*">
+							</colgroup>
+							<tbody><tr class="bgColor2">
+								<td nowrap="nowrap" align="center" colspan="3"><span class="uppercase"><strong>Create new folder</strong></span></td>
+							</tr>
+							<tr class="bgColor5">
+								<td>&nbsp;</td>
+								<td class="typo3-dimmed">
+									Name
+								</td>
+								<td>
+									<input type="text" name="name" />
+								</td>
+							</tr>
+							<tr class="bgColor5">
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>
+									<input type="submit" value="create" />
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+				<div style="width:360px; float:left;">
+					<form method="post" action="" enctype="multipart/form-data">
+						<input type="hidden" name="sabreAction" value="put" />
+						<table width="350" cellspacing="1" cellpadding="0" border="0">
+							<colgroup>
+								<col width="10">
+								<col width="130">
+								<col width="*">
+							</colgroup>
+							<tbody><tr class="bgColor2">
+								<td nowrap="nowrap" align="center" colspan="3"><span class="uppercase"><strong>Upload File</strong></span></td>
+							</tr>
+							<tr class="bgColor5">
+								<td>&nbsp;</td>
+								<td class="typo3-dimmed">
+									Name (optional)
+								</td>
+								<td>
+									<input type="text" name="name" />
+								</td>
+							</tr>
+							<tr class="bgColor5">
+								<td>&nbsp;</td>
+								<td class="typo3-dimmed">
+									File
+								</td>
+								<td>
+									<input type="file" name="file" />
+								</td>
+							</tr>
+							<tr class="bgColor5">
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>
+									<input type="submit" value="upload" />
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</f:if>
+		</div>
+	</body>
+</html>

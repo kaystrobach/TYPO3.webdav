@@ -1,0 +1,7 @@
+# cat=basic/settings; type=user[EXT:webdav/Classes/class.tx_webdav_extmgm.php:tx_webdav_extmgm->emMakeHeader]; label = Version of included Sabredav ;)
+emMakeHeader =
+# cat=basic/settings; type=boolean; label = add Cyberduck bookmarkfile in Filelist
+addCyberbuckInFileList = 1
+# cat=basic/settings; type=boolean; label = add webdav shortcut in Filelist
+addWebdavInFileList = 1
+
