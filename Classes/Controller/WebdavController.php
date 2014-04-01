@@ -177,12 +177,6 @@ class tx_Webdav_Controller_WebdavController {
 				$m->setName('T3 - PATH_typo3conf');
 			}
 			//------------------------------------------------------------------
-			// add t3lib folder
-			if(is_dir(PATH_t3lib)) {
-				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site.'typo3conf/ext/');
-				$m->setName('T3 - PATH_t3lib');
-			}
-			//------------------------------------------------------------------
 			// add typical template folder
 			if(is_dir(PATH_site.'fileadmin/templates/')) {
 				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site.'fileadmin/templates/');
