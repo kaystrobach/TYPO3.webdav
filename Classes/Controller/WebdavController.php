@@ -140,45 +140,53 @@ class tx_Webdav_Controller_WebdavController {
 		return md5($password) == $userRecord['password'];
 	}
 	function buildVFS() {
-		global $BE_USER, $TYPO3_CONF_VARS, $TYPO3_DB;
-			// fetch filemounts
-		#$BE_USER->fetchGroupData();
-		#$fileMounts = $BE_USER->returnFilemounts();
+		global $TYPO3_CONF_VARS, $TYPO3_DB, $TSFE;
+		// fetch filemounts
+
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+		if(is_null($TSFE->sys_page)) {
+
+			// needed to get the abstract repo call for enable fields working
+			$TSFE->sys_page = t3lib_div::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
+		}
+
+		$fileMounts = $GLOBALS['BE_USER']->getFileStorages();
 		//--------------------------------------------------------------------------
 		// create virtual directories for the filemounts in typo3
-		#$mounts     = array();
-		#$mountArray = array();
-		#foreach($fileMounts as $fileMount) {
-		#	$mountArray[] = $m = new tx_webdav_rootDirs($fileMount['path']);;
-		#	$m->setName($fileMount['name']);
-		#}
-		#$mounts   = $mountArray; //@todo remove later on, this is just for compatibility and use the next line instead
-		#$mounts[] = new Sabre_DAV_SimpleCollection('T3 - Mounts',$mountArray);
+		$mounts     = array();
+		$mountArray = array();
+		foreach($fileMounts as $fileMount) {
+			$mountArray[] = $m = new tx_webdav_rootDirs(PATH_site);
+			$m->setName($fileMount->getName());
+		}
+		$mounts   = $mountArray; //@todo remove later on, this is just for compatibility and use the next line instead
+		$mounts[] = new Sabre_DAV_SimpleCollection('T3 - Mounts',$mountArray);
 		//----------------------------------------------------------------------
 		// add special folders for admins
-		if($BE_USER->isAdmin()) {
+
+		if ($GLOBALS['BE_USER']->isAdmin()) {
 			//------------------------------------------------------------------
 			// add root folder
-			if(is_dir(PATH_site)) {
+			if (is_dir(PATH_site)) {
 				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site);
 				$m->setName('T3 - PATH_site');
 			}
 			//------------------------------------------------------------------
 			// add extension folder
-			if(is_dir(PATH_typo3conf . 'ext/')) {
-				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site.'typo3conf/ext/');
+			if (is_dir(PATH_typo3conf . 'ext/')) {
+				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site . 'typo3conf/ext/');
 				$m->setName('T3 - PATH_typo3conf-ext');
 			}
 			//------------------------------------------------------------------
 			// add typo3conf folder
-			if(is_dir(PATH_typo3conf)) {
-				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site.'typo3conf/');
+			if (is_dir(PATH_typo3conf)) {
+				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site .'typo3conf/');
 				$m->setName('T3 - PATH_typo3conf');
 			}
 			//------------------------------------------------------------------
 			// add typical template folder
-			if(is_dir(PATH_site.'fileadmin/templates/')) {
-				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site.'fileadmin/templates/');
+			if (is_dir(PATH_site . 'fileadmin/templates/')) {
+				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site . 'fileadmin/templates/');
 				$m->setName('T3 - fileadmin - templates');
 			}
 			//------------------------------------------------------------------
