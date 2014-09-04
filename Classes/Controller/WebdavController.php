@@ -17,7 +17,7 @@ class tx_Webdav_Controller_WebdavController {
 	private $objectTree;
 
 	function main() {
-
+		$this->initBootstrap();
 		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['webdav']);
 		if(substr($_SERVER["PATH_INFO"],0,4) === '/dav') {
 			$this->baseUri = $_SERVER["SCRIPT_NAME"] . '/dav';
@@ -68,6 +68,14 @@ class tx_Webdav_Controller_WebdavController {
 		  </dict>
 		</plist>
 		';
+	}
+	function initBootstrap() {
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+		if(is_null($GLOBALS['TSFE']->sys_page)) {
+
+			// needed to get the abstract repo call for enable fields working
+			$GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
+		}
 	}
 	function initBeUser() {
 		global $BE_USER, $TYPO3_CONF_VARS;
@@ -142,13 +150,6 @@ class tx_Webdav_Controller_WebdavController {
 	function buildVFS() {
 		global $TYPO3_CONF_VARS, $TYPO3_DB, $TSFE;
 		// fetch filemounts
-
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
-		if(is_null($TSFE->sys_page)) {
-
-			// needed to get the abstract repo call for enable fields working
-			$TSFE->sys_page = t3lib_div::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
-		}
 
 		$fileMounts = $GLOBALS['BE_USER']->getFileStorages();
 		//--------------------------------------------------------------------------
