@@ -132,7 +132,6 @@ class tx_Webdav_Controller_WebdavController {
 	 */
 	private function checkUserCredentials(array $userRecord, $password) {
 		if(t3lib_extMgm::isLoaded('saltedpasswords', false)) {
-			t3lib_div::requireOnce(t3lib_extMgm::extPath('saltedpasswords', 'classes/salts/class.tx_saltedpasswords_salts_factory.php'));
 			$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance($userRecord['password'], 'BE');
 			if (is_object($this->objInstanceSaltedPW)) {
 				return $this->objInstanceSaltedPW->checkPassword($password, $userRecord['password']);
@@ -143,17 +142,17 @@ class tx_Webdav_Controller_WebdavController {
 	function buildVFS() {
 		global $BE_USER, $TYPO3_CONF_VARS, $TYPO3_DB;
 			// fetch filemounts
-		$BE_USER->fetchGroupData();
-		$fileMounts = $BE_USER->returnFilemounts();
-	//--------------------------------------------------------------------------
-	// create virtual directories for the filemounts in typo3
-		$mounts     = array();
-		$mountArray = array();
-		foreach($fileMounts as $fileMount) {
-			$mountArray[] = $m = new tx_webdav_rootDirs($fileMount['path']);;
-			$m->setName($fileMount['name']);
-		}
-		$mounts   = $mountArray; //@todo remove later on, this is just for compatibility and use the next line instead
+		#$BE_USER->fetchGroupData();
+		#$fileMounts = $BE_USER->returnFilemounts();
+		//--------------------------------------------------------------------------
+		// create virtual directories for the filemounts in typo3
+		#$mounts     = array();
+		#$mountArray = array();
+		#foreach($fileMounts as $fileMount) {
+		#	$mountArray[] = $m = new tx_webdav_rootDirs($fileMount['path']);;
+		#	$m->setName($fileMount['name']);
+		#}
+		#$mounts   = $mountArray; //@todo remove later on, this is just for compatibility and use the next line instead
 		#$mounts[] = new Sabre_DAV_SimpleCollection('T3 - Mounts',$mountArray);
 		//----------------------------------------------------------------------
 		// add special folders for admins
@@ -205,7 +204,6 @@ class tx_Webdav_Controller_WebdavController {
 					$mounts[] = $m = new Sabre_DAV_SimpleCollection('T3 - HomePathForUser',$userDirs);
 				}
 			}
-
 			//------------------------------------------------------------------
 			// add group folder
 			if(is_dir($TYPO3_CONF_VARS['BE']['groupHomePath'])) {
