@@ -172,7 +172,7 @@ class tx_Webdav_Controller_WebdavController {
 			//------------------------------------------------------------------
 			// add typo3conf folder
 			if(is_dir(PATH_typo3conf)) {
-				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site.'typo3conf/ext/');
+				$mounts[] = $m = new tx_webdav_rootDirs(PATH_site.'typo3conf/');
 				$m->setName('T3 - PATH_typo3conf');
 			}
 			//------------------------------------------------------------------
