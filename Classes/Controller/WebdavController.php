@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class WebdavController
- * 
+ *
  * @package KayStrobach\Webdav\Controller
  */
 class WebdavController {
@@ -33,6 +33,9 @@ class WebdavController {
 	 */
 	private $objectTree;
 
+	/**
+	 * Main function of the Controller / main entry point
+	 */
 	function main() {
 		Bootstrap::initTcaAndTsfe();
 		Bootstrap::initBackendUser();
@@ -60,6 +63,11 @@ class WebdavController {
 		}
 	}
 
+	/**
+	 * Authenticate the user
+	 *
+	 * @return bool
+	 */
 	function authenticate() {
 		global $BE_USER;
 		$this->auth = new \Sabre_HTTP_BasicAuth();
@@ -109,6 +117,10 @@ class WebdavController {
 		}
 		return md5($password) == $userRecord['password'];
 	}
+
+	/**
+	 * build the virtual file system
+	 */
 	function buildVFS() {
 		//--------------------------------------------------------------------------
 		// create virtual directories for the filemounts in typo3
@@ -117,6 +129,10 @@ class WebdavController {
 		$root = new \Sabre_DAV_SimpleCollection('root',$mounts);
 		$this->objectTree = new \Sabre_DAV_ObjectTree($root);
 	}
+
+	/**
+	 * handle the request
+	 */
 	function handleRequest() {
 		// configure dav server
 		$server = new \Sabre_DAV_Server($this->objectTree);

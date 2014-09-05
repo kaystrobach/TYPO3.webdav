@@ -1,15 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kay
- * Date: 05.09.14
- * Time: 10:50
- */
 
 namespace KayStrobach\WebDav\Utilities;
 
-
+/**
+ * Class CyberDuckUtility
+ *
+ * @package KayStrobach\WebDav\Utilities
+ */
 class CyberDuckUtility {
+	/**
+	 * return the bookmark as string
+	 *
+	 * @return string
+	 */
 	public static function getBookmark() {
 		global $BE_USER;
 		$buffer = '<?xml version="1.0" encoding="UTF-8"?>
@@ -35,6 +38,9 @@ class CyberDuckUtility {
 		return $buffer;
 	}
 
+	/**
+	 * send the bookmark with correct header
+	 */
 	public static function sendBookmark() {
 		header('Content-Type:application/octet-stream');
 		header('Content-Disposition: attachment;filename="cyber.duck"');

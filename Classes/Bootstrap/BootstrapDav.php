@@ -12,6 +12,8 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 class BootstrapDav {
 	/**
 	 * initialize the sabredav autoloader
+	 *
+	 * @return void
 	 */
 	public static function initialize() {
 		require_once (ExtensionManagementUtility::extPath('webdav') . 'Resources/Contrib/SabreDav/lib/Sabre/autoload.php');

@@ -11,6 +11,11 @@ namespace KayStrobach\Webdav\WebDav\FileSystem;
 
 use KayStrobach\Webdav\WebDav\Nodes\WebDavRootDirectory;
 
+/**
+ * Class Root
+ * 
+ * @package KayStrobach\Webdav\WebDav\FileSystem
+ */
 class Root {
 	/**
 	 * build the complete root FS
@@ -90,7 +95,7 @@ class Root {
 			//------------------------------------------------------------------
 			// add typo3conf folder
 			if (is_dir(PATH_typo3conf)) {
-				$mounts[] = $m = new WebDavRootDirectory(PATH_site .'typo3conf/');
+				$mounts[] = $m = new WebDavRootDirectory(PATH_site . 'typo3conf/');
 				$m->setName('T3 - PATH_typo3conf');
 			}
 			//------------------------------------------------------------------
@@ -163,8 +168,8 @@ class Root {
 			);
 
 			foreach ($userDirArray as $userDir) {
-				if (is_dir($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].'/'.$userDir['uid'])) {
-					$userDirs[] = $m = new WebDavRootDirectory($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].'/'.$userDir['uid']);
+				if (is_dir($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'] . '/' . $userDir['uid'])) {
+					$userDirs[] = $m = new WebDavRootDirectory($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'] . '/' . $userDir['uid']);
 					$m->setName($userDir['username']);
 				}
 			}
@@ -183,7 +188,7 @@ class Root {
 		//--------------------------------------------------------------------------
 		// create virtual directories for the filemounts in typo3
 		$mounts = array();
-		foreach($fileMounts as $fileMount) {
+		foreach ($fileMounts as $fileMount) {
 			$mounts[] = $m = new WebDavRootDirectory(PATH_site);
 			$m->setName($fileMount->getName());
 		}

@@ -17,22 +17,27 @@ class PermissionPlugin extends \Sabre_DAV_ServerPlugin {
 
 	/**
 	 * get Features function
+	 *
+	 * @return array
 	 */
-	function getFeatures() {
+	public function getFeatures() {
 		return array();
 	}
 
-
 	/**
 	 * get Features function
+	 *
+	 * @param \Sabre_DAV_Server $server
+	 * @return void
 	 */
 	public function initialize(\Sabre_DAV_Server $server) {
 		$this->server = $server;
 		$this->server->subscribeEvent('beforeBind', array($this, 'beforeBind'));
 		$this->server->subscribeEvent('beforeUnbind', array($this, 'beforeUnbind'));
 		$this->server->subscribeEvent('beforeWriteContent', array($this, 'beforeWriteContent'));
-		#$this->server->subscribeEvent('afterGetProperties', array($this, 'afterGetProperties'));
+		//$this->server->subscribeEvent('afterGetProperties', array($this, 'afterGetProperties'));
 	}
+
 	//--------------------------------------------------------------------------
 	/**
 	 * decide wether the creation of a node is allowed 	 	 	 	 
@@ -40,18 +45,18 @@ class PermissionPlugin extends \Sabre_DAV_ServerPlugin {
 	public function beforeBind($path) {
 		// allow admins to create all filetypes ...
 		if ($GLOBALS['BE_USER']->isAdmin()) {
-			return true;
+			return TRUE;
 		}
-		
+
 		// allow only some filetypes for normal users.
 		$t3File = new BasicFileUtility();
 		$t3File->init(
 			$GLOBALS['fileMounts'],
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']
 		);
-		
+
 		//check path in mount rules
-		
+
 		// explode by dot and get last chars after dot as extension
 		$ext = array_pop(explode('.', $path));
 		// check if it is allowed to change a specific file
@@ -63,6 +68,7 @@ class PermissionPlugin extends \Sabre_DAV_ServerPlugin {
 		//return false to allow operation
 		return TRUE;
 	}
+
 	//--------------------------------------------------------------------------
 	/**
 	 * decide wether deletion of a node is allowed

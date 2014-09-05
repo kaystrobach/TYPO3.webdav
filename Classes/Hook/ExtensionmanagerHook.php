@@ -5,7 +5,15 @@ namespace KayStrobach\Webdav\Hook;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
+/**
+ * Class ExtensionmanagerHook
+ *
+ * @package KayStrobach\Webdav\Hook
+ */
 class ExtensionmanagerHook {
+	/**
+	 * @return string
+	 */
 	function emMakeHeader() {
 		include_once ExtensionManagementUtility::extPath('webdav').'Resources/Contrib/SabreDav/lib/Sabre/autoload.php';
 		$flashMessage = new FlashMessage(
@@ -15,6 +23,10 @@ class ExtensionmanagerHook {
 		);
 		return $flashMessage->render();
 	}
+
+	/**
+	 * @return string
+	 */
 	function checkSapi() {
 		switch(php_sapi_name()) {
 			case 'cgi-fcgi':

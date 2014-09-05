@@ -4,7 +4,15 @@ namespace KayStrobach\Webdav\Hook;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Class PagerendererHook
+ *
+ * @package KayStrobach\Webdav\Hook
+ */
 class PagerendererHook {
+	/**
+	 * @param $params
+	 */
 	function render(&$params) {
 		if (strpos(GeneralUtility::getIndpEnv('SCRIPT_NAME'), 'file_list.php')) {
 			$buffer = '';
