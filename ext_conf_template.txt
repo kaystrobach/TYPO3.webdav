@@ -1,6 +1,6 @@
-# cat=basic/settings; type=user[EXT:webdav/Classes/class.tx_webdav_extmgm.php:tx_webdav_extmgm->checkSapi]; label = Check SAPI type of php
+# cat=basic/settings; type=user[KayStrobach\Webdav\Hook\ExtensionmanagerHook->checkSapi]; label = Check SAPI type of php
 checkSapi =
-# cat=basic/settings; type=user[EXT:webdav/Classes/class.tx_webdav_extmgm.php:tx_webdav_extmgm->emMakeHeader]; label = Version of included Sabredav ;)
+# cat=basic/settings; type=user[KayStrobach\Webdav\Hook\ExtensionmanagerHook->emMakeHeader]; label = Version of included Sabredav ;)
 emMakeHeader =
 # cat=basic/settings; type=boolean; label = add Cyberduck bookmarkfile in Filelist
 addCyberbuckInFileList = 1

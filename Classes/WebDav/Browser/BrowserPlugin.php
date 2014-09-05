@@ -1,6 +1,8 @@
 <?php
 
-class tx_webdav_browser_plugin extends Sabre_DAV_Browser_Plugin {
+namespace KayStrobach\Webdav\WebDav\Browser;
+
+class BrowserPlugin extends \Sabre_DAV_Browser_Plugin {
 	/**
      * Generates the html directory index for a given url
      *

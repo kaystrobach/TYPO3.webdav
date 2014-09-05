@@ -1,6 +1,10 @@
 <?php
 
-class tx_webdav_permission_plugin extends Sabre_DAV_ServerPlugin {
+namespace KayStrobach\Webdav\WebDav\Plugin;
+
+use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
+
+class PermissionPlugin extends \Sabre_DAV_ServerPlugin {
 	public $server;
 	//--------------------------------------------------------------------------
 	/**
@@ -13,7 +17,7 @@ class tx_webdav_permission_plugin extends Sabre_DAV_ServerPlugin {
 	/**
 	 * get Features function
 	 */
-	function initialize(Sabre_DAV_Server $server) {
+	function initialize(\Sabre_DAV_Server $server) {
 		$this->server = $server;
 		$this->server->subscribeEvent('beforeBind'        ,array($this,'beforeBind'));
 		$this->server->subscribeEvent('beforeUnbind'      ,array($this,'beforeUnbind'));
@@ -36,7 +40,7 @@ class tx_webdav_permission_plugin extends Sabre_DAV_ServerPlugin {
 		}//*/
 		
 		// allow only some filetypes for normal users.
-		$t3File = new t3lib_basicFileFunctions();
+		$t3File = new BasicFileUtility();
 		$t3File->init($fileMounts,$TYPO3_CONF_VARS['BE']['fileExtensions']);
 		
 		//check path in mount rules
@@ -45,7 +49,7 @@ class tx_webdav_permission_plugin extends Sabre_DAV_ServerPlugin {
 		$ext = array_pop(explode('.',$path));
 		// check if it is allowed to change a specific file
 		if(!$t3File->checkIfAllowed($ext,dirname($path),basename($path))) {
-			throw new Sabre_DAV_Exception_Forbidden('File extension "'.$ext.'" not allowed');
+			throw new \Sabre_DAV_Exception_Forbidden('File extension "'.$ext.'" not allowed');
 			// stop when filetype is false
 			return false;
 		}
@@ -54,34 +58,16 @@ class tx_webdav_permission_plugin extends Sabre_DAV_ServerPlugin {
 	}
 	//--------------------------------------------------------------------------
 	/**
-	 * decide wether deletion of a node is allowed 	 	 	 	 
+	 * decide wether deletion of a node is allowed
 	 */
 	function beforeUnbind($path) {
 		return $this->beforeBind($path);
 	}
 	//--------------------------------------------------------------------------
 	/**
-	 * decide wether deletion of a node is allowed 	 	 	 	 
+	 * decide wether deletion of a node is allowed
 	 */
 	function beforeWriteContent($path) {
 		return $this->beforeBind($path);
 	}
-	//--------------------------------------------------------------------------
-	/**
-	 * add additional permissions 	 	 	 	 
-	 */
-	/*
-	function afterGetProperties($uri, &$properties) {
-		try{
-			$this->beforeBind($uri);
-		} catch(Sabre_DAV_Exception_Forbidden $e) {
-			$properties[200]['{DAV:}can_write']            = false;
-			$properties[200]['{DAV:}can_write_properties'] = false;
-			$properties[200]['{DAV:}can_write_content']    = false;
-			$properties[200]['{DAV:}can_bind']             = false;
-			$properties[200]['{DAV:}can_unbind']           = false;
-			$properties[200]['{DAV:}can_read']             = true;
-		}
-		return true;
-	}//*/
 }
