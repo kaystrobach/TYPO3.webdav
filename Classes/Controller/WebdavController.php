@@ -8,7 +8,7 @@ use KayStrobach\Webdav\Utilities\CyberDuckUtility;
 use KayStrobach\Webdav\WebDav\Plugin\BrowserPlugin;
 use KayStrobach\Webdav\WebDav\FileSystem\Root;
 use KayStrobach\Webdav\WebDav\Plugin\PermissionPlugin;
-use KayStrobach\Webdav\WebDav\Nodes\WebDavRootDirectory;
+use KayStrobach\Webdav\WebDav\Nodes\Folder\WebDavRootDirectory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace KayStrobach\Webdav\WebDav\Nodes;
+namespace KayStrobach\Webdav\WebDav\Nodes\Folder;
 /**
  * Class WebDavRootDirectory
  *
