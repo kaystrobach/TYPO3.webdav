@@ -43,23 +43,23 @@ class WebdavController {
 		Bootstrap::initBackendUser();
 
 		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['webdav']);
-		if (substr($_SERVER['PATH_INFO'],0,4) === '/dav') {
+		if (substr($_SERVER['PATH_INFO'], 0, 4) === '/dav') {
 			$this->baseUri = $_SERVER['SCRIPT_NAME'] . '/dav';
 			BootstrapDav::initialize();
-			if($this->authenticate()) {
-				$this->buildVFS();
+			if ($this->authenticate()) {
+				$this->buildVirtualFilesystem();
 				$this->handleRequest();
 			}
 			die();
 		} elseif ($_SERVER['SERVER_NAME'] === $extConfig['davOnlyHostname']) {
 			$this->baseUri = dirname($_SERVER['SCRIPT_NAME']);
 			BootstrapDav::initialize();
-			if($this->authenticate()) {
-				$this->buildVFS();
+			if ($this->authenticate()) {
+				$this->buildVirtualFilesystem();
 				$this->handleRequest();
 			}
 			die();
-		} elseif (substr($_SERVER['PATH_INFO'],0,15) === '/cyberduck.duck') {
+		} elseif (substr($_SERVER['PATH_INFO'], 0, 15) === '/cyberduck.duck') {
 			CyberDuckUtility::sendBookmark();
 			die();
 		}
@@ -70,13 +70,12 @@ class WebdavController {
 	 *
 	 * @return bool
 	 */
-	function authenticate() {
-		global $BE_USER;
+	public function authenticate() {
 		$this->auth = new \Sabre_HTTP_BasicAuth();
 		$result     = $this->auth->getUserPass();
-		$BE_USER->setBeUserByName($result[0]);
+		$GLOBALS['BE_USER']->setBeUserByName($result[0]);
 
-		if (!$result || !$this->checkUserCredentials($BE_USER->user, $result[1])) {
+		if (!$result || !$this->checkUserCredentials($GLOBALS['BE_USER']->user, $result[1])) {
 			$this->auth->setRealm('WebDav for TYPO3');
 			$this->auth->requireLogin();
 
@@ -125,7 +124,7 @@ class WebdavController {
 	 *
 	 * @return void
 	 */
-	function buildVFS() {
+	public function buildVirtualFilesystem() {
 		//--------------------------------------------------------------------------
 		// create virtual directories for the filemounts in typo3
 		$mounts = Root::buildRootFolders();
@@ -139,10 +138,10 @@ class WebdavController {
 	 *
 	 * @return void
 	 */
-	function handleRequest() {
+	public function handleRequest() {
 		// configure dav server
 		$server = new \Sabre_DAV_Server($this->objectTree);
-		
+
 		$server->setBaseUri($this->baseUri);
 		//$server->setBaseUri('typo3conf/ext/ks_sabredav/webdavserver.php/');
 		//----------------------------------------------------------------------

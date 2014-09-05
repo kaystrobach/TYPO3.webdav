@@ -47,7 +47,7 @@ class ExtensionmanagerHook {
 				break;
 			default:
 				$flashMessage = new FlashMessage(
-					'The return value of the php_sapi_name tells me, that you run this script in an untested environment. If the webdav server doesn´t work as expected, please file a bugreport with your complere phpinfo()',
+					'This script runs in an untested environment. If the webdav server doesn´t work as expected, please file a bugreport with your complete phpinfo()',
 					'Unknown php sapi',
 					FlashMessage::ERROR
 				);
