@@ -4,16 +4,27 @@ namespace KayStrobach\Webdav\Bootstrap;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * General Bootstrap
+ *
+ * @package KayStrobach\Webdav\Bootstrap
+ */
 class Bootstrap {
+	/**
+	 * initialize the table configuration and the TSFE
+	 */
 	public static function initTcaAndTsfe() {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
-		if(is_null($GLOBALS['TSFE']->sys_page)) {
+		if (is_null($GLOBALS['TSFE']->sys_page)) {
 
 			// needed to get the abstract repo call for enable fields working
 			$GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
 		}
 	}
 
+	/**
+	 * initialize Backenduser
+	 */
 	public static function initBackendUser() {
 		global $BE_USER, $TYPO3_CONF_VARS;
 		// create a new backendusersession ;) need to use basic auth here

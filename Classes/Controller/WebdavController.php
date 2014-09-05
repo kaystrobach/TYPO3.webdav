@@ -12,6 +12,11 @@ use KayStrobach\Webdav\WebDav\Nodes\WebDavRootDirectory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Class WebdavController
+ * 
+ * @package KayStrobach\Webdav\Controller
+ */
 class WebdavController {
 	/**
 	 * @var string The base uri of the server
