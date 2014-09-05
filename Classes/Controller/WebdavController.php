@@ -95,9 +95,8 @@ class WebdavController {
 			);
 			echo $view->render();
 			return FALSE;
-		} else {
-			return TRUE;
 		}
+		return TRUE;
 	}
 
 	/**
