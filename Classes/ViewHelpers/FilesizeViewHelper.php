@@ -2,6 +2,11 @@
 
 namespace KayStrobach\Webdav\ViewHelpers;
 
+/**
+ * Class FilesizeViewHelper
+ *
+ * @package KayStrobach\Webdav\ViewHelpers
+ */
 class FilesizeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * @return string

@@ -12,12 +12,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PagerendererHook {
 	/**
 	 * @param $params
+	 *
+	 * @return void
 	 */
-	function render(&$params) {
+	public function render(&$params) {
 		if (strpos(GeneralUtility::getIndpEnv('SCRIPT_NAME'), 'file_list.php')) {
 			$buffer = '';
 			$settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['webdav']);
-			if($settings['addCyberbuckInFileList']) {
+			if ($settings['addCyberbuckInFileList']) {
 				$buffer = '
 					<a href="' . GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . 'index.php/cyberduck.duck" title="Cyberduck bookmarkfile for webdav">
 						<img src="../../../../' . GeneralUtility::siteRelPath('webdav') . 'Resources/Public/Images/Cyberduck.png">

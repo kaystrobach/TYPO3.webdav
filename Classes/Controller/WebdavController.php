@@ -21,7 +21,7 @@ class WebdavController {
 	/**
 	 * @var string The base uri of the server
 	 */
-	private $baseUri = null;
+	private $baseUri = NULL;
 
 	/**
 	 * @var \Sabre_HTTP_BasicAuth
@@ -35,29 +35,31 @@ class WebdavController {
 
 	/**
 	 * Main function of the Controller / main entry point
+	 *
+	 * @return void
 	 */
-	function main() {
+	public function main() {
 		Bootstrap::initTcaAndTsfe();
 		Bootstrap::initBackendUser();
 
 		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['webdav']);
-		if (substr($_SERVER["PATH_INFO"],0,4) === '/dav') {
-			$this->baseUri = $_SERVER["SCRIPT_NAME"] . '/dav';
+		if (substr($_SERVER['PATH_INFO'],0,4) === '/dav') {
+			$this->baseUri = $_SERVER['SCRIPT_NAME'] . '/dav';
 			BootstrapDav::initialize();
 			if($this->authenticate()) {
 				$this->buildVFS();
 				$this->handleRequest();
 			}
 			die();
-		} elseif($_SERVER['SERVER_NAME'] === $extConfig['davOnlyHostname']) {
-			$this->baseUri = dirname($_SERVER["SCRIPT_NAME"]);
+		} elseif ($_SERVER['SERVER_NAME'] === $extConfig['davOnlyHostname']) {
+			$this->baseUri = dirname($_SERVER['SCRIPT_NAME']);
 			BootstrapDav::initialize();
 			if($this->authenticate()) {
 				$this->buildVFS();
 				$this->handleRequest();
 			}
 			die();
-		} elseif(substr($_SERVER["PATH_INFO"],0,15) === '/cyberduck.duck') {
+		} elseif (substr($_SERVER['PATH_INFO'],0,15) === '/cyberduck.duck') {
 			CyberDuckUtility::sendBookmark();
 			die();
 		}
@@ -83,7 +85,7 @@ class WebdavController {
 			$extRoot   = $base . ExtensionManagementUtility::siteRelPath('webdav');
 			$typo3root = $base . 'typo3/';
 			$view = GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
-			$view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('webdav').'Resources/Public/Templates/accessdenied.html');
+			$view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('webdav') . 'Resources/Public/Templates/accessdenied.html');
 				//asign
 			$view->assign('extRoot', $extRoot);
 			$view->assign('typo3Root', $typo3root);
@@ -93,9 +95,9 @@ class WebdavController {
 				)
 			);
 			echo $view->render();
-			return false;
+			return FALSE;
 		} else {
-			return true;
+			return TRUE;
 		}
 	}
 
@@ -109,7 +111,7 @@ class WebdavController {
 	 * @return boolean
 	 */
 	private function checkUserCredentials(array $userRecord, $password) {
-		if (ExtensionManagementUtility::isLoaded('saltedpasswords', false)) {
+		if (ExtensionManagementUtility::isLoaded('saltedpasswords', FALSE)) {
 			$this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($userRecord['password'], 'BE');
 			if (is_object($this->objInstanceSaltedPW)) {
 				return $this->objInstanceSaltedPW->checkPassword($password, $userRecord['password']);
@@ -120,34 +122,40 @@ class WebdavController {
 
 	/**
 	 * build the virtual file system
+	 *
+	 * @return void
 	 */
 	function buildVFS() {
 		//--------------------------------------------------------------------------
 		// create virtual directories for the filemounts in typo3
-		$mounts     = Root::buildRootFolders();
+		$mounts = Root::buildRootFolders();
 
-		$root = new \Sabre_DAV_SimpleCollection('root',$mounts);
+		$root = new \Sabre_DAV_SimpleCollection('root', $mounts);
 		$this->objectTree = new \Sabre_DAV_ObjectTree($root);
 	}
 
 	/**
 	 * handle the request
+	 *
+	 * @return void
 	 */
 	function handleRequest() {
 		// configure dav server
 		$server = new \Sabre_DAV_Server($this->objectTree);
 		
 		$server->setBaseUri($this->baseUri);
-		#$server->setBaseUri('typo3conf/ext/ks_sabredav/webdavserver.php/');
+		//$server->setBaseUri('typo3conf/ext/ks_sabredav/webdavserver.php/');
 		//----------------------------------------------------------------------
 		// add plugins
 		$lockBackend = new \Sabre_DAV_Locks_Backend_FS('data');
 		$server->addPlugin(new \Sabre_DAV_Mount_Plugin());
 		$server->addPlugin(new \Sabre_DAV_Locks_Plugin($lockBackend));
-		#$server->addPlugin(new BrowserPlugin());
+		//$server->addPlugin(new BrowserPlugin());
 		$server->addPlugin(new PermissionPlugin());
+
 		// for 1.2.x alpha only
-		#$server->addPlugin(new Sabre_DAV_Browser_GuessContentType());
+		//$server->addPlugin(new Sabre_DAV_Browser_GuessContentType());
+
 		//----------------------------------------------------------------------
 		// start server
 		$server->exec();

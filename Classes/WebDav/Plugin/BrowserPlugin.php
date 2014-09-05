@@ -5,6 +5,11 @@ namespace KayStrobach\Webdav\WebDav\Plugin;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Class BrowserPlugin
+ * 
+ * @package KayStrobach\Webdav\WebDav\Plugin
+ */
 class BrowserPlugin extends \Sabre_DAV_Browser_Plugin {
 	/**
 	 * Generates the html directory index for a given url
@@ -29,18 +34,18 @@ class BrowserPlugin extends \Sabre_DAV_Browser_Plugin {
 		);
 
 		$k = 0;
-	    $files = array();
-		foreach($tempFiles as $file) {
+		$files = array();
+		foreach ($tempFiles as $file) {
 			// This is the current directory, we can skip it
-			if (rtrim($file['href'],'/')==$path) {
+			if (rtrim($file['href'], '/')==$path) {
 				continue;
 			}
-			$files[] = $this->renderFile($file,$path);
+			$files[] = $this->renderFile($file, $path);
 		}
 
 		// Render template with fluid
 		$view = GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
-		$view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('webdav').'Resources/Public/Templates/filelist.html');
+		$view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('webdav') . 'Resources/Public/Templates/filelist.html');
 
 		//asign
 		$view->assign('files', $files);
@@ -65,7 +70,7 @@ class BrowserPlugin extends \Sabre_DAV_Browser_Plugin {
 	 * @param $path
 	 * @return array
 	 */
-	function renderFile($file, $path) {
+	public function renderFile($file, $path) {
 		$name = $this->escapeHTML(basename($file['href']));
 		$type = NULL;
 		if (isset($file[200]['{DAV:}resourcetype'])) {
@@ -97,13 +102,13 @@ class BrowserPlugin extends \Sabre_DAV_Browser_Plugin {
 		$fullPath = '/' . trim($this->server->getBaseUri() . ($path ? $this->escapeHTML($path) . '/':'') . $name, '/');
 		$isImage = FALSE;
 		if ($type == 'Collection') {
-			$icon = $this->typo3root.'sysext/t3skin/icons/gfx/i/_icon_webfolders.gif';
-			$fullPath.= '/';
+			$icon = $this->typo3root . 'sysext/t3skin/icons/gfx/i/_icon_webfolders.gif';
+			$fullPath .= '/';
 		} else {
-			$extension = array_pop(explode('.',$name));
+			$extension = array_pop(explode('.', $name));
 			if (file_exists(TYPO3_mainDir . 'gfx/fileicons/' . $extension . '.gif')) {
 				$icon = $this->typo3root . 'gfx/fileicons/' . $extension . '.gif';
-				if(strpos(',' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',', $extension)) {
+				if (strpos(',' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',', $extension)) {
 					$isImage = TRUE;
 				}
 			} else {

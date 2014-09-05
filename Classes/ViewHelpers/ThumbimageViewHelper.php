@@ -14,7 +14,7 @@ class ThumbimageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 *
 	 * @return string
 	 */
-	public function render($src, $path='thumbs.php') {
+	public function render($src, $path = 'thumbs.php') {
 		$imagePath = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'] . '/' . $src));
 		$return = \t3lib_BEfunc::getThumbNail($path, $imagePath);
 		return $return;

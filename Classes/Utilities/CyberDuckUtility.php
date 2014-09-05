@@ -1,6 +1,7 @@
 <?php
 
 namespace KayStrobach\WebDav\Utilities;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class CyberDuckUtility
@@ -14,7 +15,6 @@ class CyberDuckUtility {
 	 * @return string
 	 */
 	public static function getBookmark() {
-		global $BE_USER;
 		$buffer = '<?xml version="1.0" encoding="UTF-8"?>
 		<plist>
 		  <dict>
@@ -23,13 +23,13 @@ class CyberDuckUtility {
 			<key>Nickname</key>
 			<string>' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '</string>
 			<key>Hostname</key>
-			<string>' . t3lib_div::getIndpEnv('HTTP_HOST') .'</string>
+			<string>' . GeneralUtility::getIndpEnv('HTTP_HOST') . '</string>
 			<key>Port</key>
 			<string>80</string>
 			<key>Username</key>
-			<string>' . $BE_USER->user['username'] . '</string>
+			<string>' . $$GLOBALS['BE_USER']->user['username'] . '</string>
 			<key>Path</key>
-			<string>' . dirname(t3lib_div::getIndpEnv('REQUEST_URI')) .'/dav/</string>
+			<string>' . dirname(GeneralUtility::getIndpEnv('REQUEST_URI')) . '/dav/</string>
 			<key>Access Timestamp</key>
 			<string>' . time() . '</string>
 		  </dict>

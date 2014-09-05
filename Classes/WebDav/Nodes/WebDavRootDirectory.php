@@ -16,6 +16,8 @@ class WebDavRootDirectory extends \Sabre_DAV_FS_Directory {
 
 	/**
 	 * @param string $name
+	 *
+	 * @return void
 	 */
 	public function setName($name) {
 		//strip invalid chars for dir names
