@@ -1,6 +1,8 @@
 <?php
 
-class Tx_Webdav_ViewHelpers_ThumbimageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+namespace KayStrobach\Webdav\ViewHelpers;
+
+class ThumbimageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * @param string $src
 	 * @param string $path

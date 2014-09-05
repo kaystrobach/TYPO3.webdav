@@ -1,6 +1,8 @@
 <?php
 
-class Tx_Webdav_ViewHelpers_FilesizeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+namespace KayStrobach\Webdav\ViewHelpers;
+
+class FilesizeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * @return string
 	 */

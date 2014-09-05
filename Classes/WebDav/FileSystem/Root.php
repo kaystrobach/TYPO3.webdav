@@ -61,7 +61,7 @@ class Root {
 	 * @return void
 	 */
 	public static function addIfNotNull(&$array, $value, $name) {
-		if(is_array($value) && (count($value) > 0)) {
+		if (is_array($value) && (count($value) > 0)) {
 			$array[] = new \Sabre_DAV_SimpleCollection($name, $value);
 		}
 	}
@@ -137,8 +137,8 @@ class Root {
 					'title'
 			);
 			foreach ($groupDirArray as $groupDir) {
-				if (is_dir($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'].'/'.$groupDir['uid'])) {
-					$groupDirs[] = $m = new WebDavRootDirectory($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'].'/'.$groupDir['uid']);
+				if (is_dir($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] . '/' . $groupDir['uid'])) {
+					$groupDirs[] = $m = new WebDavRootDirectory($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] . '/' . $groupDir['uid']);
 					$m->setName($groupDir['title']);
 				}
 			}

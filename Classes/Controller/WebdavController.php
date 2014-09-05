@@ -5,7 +5,7 @@ namespace KayStrobach\Webdav\Controller;
 use KayStrobach\Webdav\Bootstrap\Bootstrap;
 use KayStrobach\Webdav\Bootstrap\BootstrapDav;
 use KayStrobach\Webdav\Utilities\CyberDuckUtility;
-use KayStrobach\Webdav\WebDav\Browser\BrowserPlugin;
+use KayStrobach\Webdav\WebDav\Plugin\BrowserPlugin;
 use KayStrobach\Webdav\WebDav\FileSystem\Root;
 use KayStrobach\Webdav\WebDav\Plugin\PermissionPlugin;
 use KayStrobach\Webdav\WebDav\Nodes\WebDavRootDirectory;
