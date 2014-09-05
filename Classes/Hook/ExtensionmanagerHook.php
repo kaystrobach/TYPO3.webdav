@@ -27,7 +27,7 @@ class ExtensionmanagerHook {
 	/**
 	 * @return string
 	 */
-	function checkSapi() {
+	public function checkSapi() {
 		switch(php_sapi_name()) {
 			case 'cgi-fcgi':
 				// proceed in cgi
@@ -51,7 +51,6 @@ class ExtensionmanagerHook {
 					'Unknown php sapi',
 					FlashMessage::ERROR
 				);
-				break;
 		}
 		return $flashMessage->render();
 	}

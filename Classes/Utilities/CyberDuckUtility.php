@@ -40,6 +40,8 @@ class CyberDuckUtility {
 
 	/**
 	 * send the bookmark with correct header
+	 *
+	 * @return void
 	 */
 	public static function sendBookmark() {
 		header('Content-Type:application/octet-stream');

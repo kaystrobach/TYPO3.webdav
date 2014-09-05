@@ -7,7 +7,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class BrowserPlugin
- * 
+ *
  * @package KayStrobach\Webdav\WebDav\Plugin
  */
 class BrowserPlugin extends \Sabre_DAV_Browser_Plugin {
@@ -37,7 +37,7 @@ class BrowserPlugin extends \Sabre_DAV_Browser_Plugin {
 		$files = array();
 		foreach ($tempFiles as $file) {
 			// This is the current directory, we can skip it
-			if (rtrim($file['href'], '/')==$path) {
+			if (rtrim($file['href'], '/') == $path) {
 				continue;
 			}
 			$files[] = $this->renderFile($file, $path);
