@@ -2,6 +2,7 @@
 
 namespace KayStrobach\Webdav\Hook;
 
+use KayStrobach\Webdav\Bootstrap\BootstrapDav;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -15,7 +16,7 @@ class ExtensionmanagerHook {
 	 * @return string
 	 */
 	public function emMakeHeader() {
-		require_once(ExtensionManagementUtility::extPath('webdav') . 'Resources/Contrib/SabreDav/lib/Sabre/autoload.php');
+		BootstrapDav::initialize();
 		$flashMessage = new FlashMessage(
 			'Your SabreDav version is ' . \Sabre_DAV_Version::VERSION . ' (' . \Sabre_DAV_Version::STABILITY . ')',
 			'',
