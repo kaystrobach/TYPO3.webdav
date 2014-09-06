@@ -148,7 +148,7 @@ class WebdavController {
 		$lockBackend = new \Sabre_DAV_Locks_Backend_FS('data');
 		$server->addPlugin(new \Sabre_DAV_Mount_Plugin());
 		$server->addPlugin(new \Sabre_DAV_Locks_Plugin($lockBackend));
-		//$server->addPlugin(new BrowserPlugin());
+		$server->addPlugin(new BrowserPlugin());
 		$server->addPlugin(new PermissionPlugin());
 
 		// for 1.2.x alpha only

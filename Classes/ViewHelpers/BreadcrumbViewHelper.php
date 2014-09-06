@@ -1,13 +1,14 @@
 <?php
 
 namespace KayStrobach\Webdav\ViewHelpers;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class BreadcrumbViewHelper
  *
  * @package KayStrobach\Webdav\ViewHelpers
  */
-class BreadcrumbViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class BreadcrumbViewHelper extends AbstractViewHelper {
 	/**
 	 * @param string $path
 	 * @param string $base

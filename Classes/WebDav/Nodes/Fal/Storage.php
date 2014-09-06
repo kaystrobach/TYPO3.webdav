@@ -12,6 +12,11 @@ class Storage extends \Sabre_DAV_SimpleCollection {
 	protected $storage = NULL;
 
 	/**
+	 * @var bool
+	 */
+	protected $initialized = FALSE;
+
+	/**
 	 * @var \TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected $folder = NULL;
@@ -36,48 +41,36 @@ class Storage extends \Sabre_DAV_SimpleCollection {
 		return $name;
 	}
 
-	public function getAlias() {
-		return $this->getName();
+	public function getChild($name) {
+		$this->initializeChildren();
+		return parent::getChild($name);
 	}
 
-	public function log($message) {
-		$GLOBALS['BE_USER']->writelog(
-			255,
-			2,
-			0,
-			1,
-			'Message: %s',
-			array(
-				$message
-			)
-		);
-	}
-
-	/**
-	 * @return array|void
-	 */
 	public function getChildren() {
-		/** @var \TYPO3\CMS\Core\Resource\Folder $folder */
-		if ($this->folder === NULL) {
-			$this->folder = $this->storage->getFolder('/');
+		$this->initializeChildren();
+		return parent::getChildren();
+	}
+
+	public function initializeChildren() {
+		if($this->initialized === TRUE) {
+			return;
 		}
+		/** @var \TYPO3\CMS\Core\Resource\Folder $folder */
 		$subFolders = $this->folder->getSubfolders();
-		$collection = array();
 		foreach($subFolders as $folder) {
-			$collection[] = $f = new Folder($folder->getName());
+			$f = new Folder($folder->getName(), array());
 			$f->setStorage($this->storage);
 			$f->setFolder($folder);
-			$this->log('FOLDER:' . $folder->getCombinedIdentifier() . ' - ' . $f->getName());
+			$this->addChild($f);
 		}
 
 		$files = $this->folder->getFiles();
 		foreach($files as $file) {
-			$collection[] = $f = new File();
+			$f = new File();
 			$f->setFalFileObject($file);
-			$this->log('FILE:' . $file->getCombinedIdentifier() . ' - ' . $file->getName());
+			$this->addChild($f);
 		}
-
-		return $collection;
+		$this->initialized = TRUE;
 	}
 
 	/**
@@ -85,6 +78,10 @@ class Storage extends \Sabre_DAV_SimpleCollection {
 	 */
 	public function setStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
 		$this->storage = $storage;
+		if ($this->folder === NULL) {
+			$this->folder = $this->storage->getFolder('/');
+		}
+		#$this->initializeChildren();
 	}
 
 	/**

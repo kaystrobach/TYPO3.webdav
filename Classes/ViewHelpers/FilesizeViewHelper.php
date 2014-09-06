@@ -1,13 +1,14 @@
 <?php
 
 namespace KayStrobach\Webdav\ViewHelpers;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class FilesizeViewHelper
  *
  * @package KayStrobach\Webdav\ViewHelpers
  */
-class FilesizeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class FilesizeViewHelper extends AbstractViewHelper {
 	/**
 	 * @return string
 	 */

@@ -1,13 +1,14 @@
 <?php
 
 namespace KayStrobach\Webdav\ViewHelpers;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class ThumbimageViewHelper
  *
  * @package KayStrobach\Webdav\ViewHelpers
  */
-class ThumbimageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class ThumbimageViewHelper extends AbstractViewHelper {
 	/**
 	 * @param string $src
 	 * @param string $path

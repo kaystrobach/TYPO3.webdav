@@ -16,6 +16,7 @@ class PagerendererHook {
 	 * @return void
 	 */
 	public function render(&$params) {
+		return;
 		if (strpos(GeneralUtility::getIndpEnv('SCRIPT_NAME'), 'file_list.php')) {
 			$buffer = '';
 			$settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['webdav']);
