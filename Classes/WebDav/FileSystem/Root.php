@@ -11,6 +11,7 @@ namespace KayStrobach\Webdav\WebDav\FileSystem;
 
 use KayStrobach\Webdav\WebDav\Nodes\Fal\Storage;
 use KayStrobach\Webdav\WebDav\Nodes\Folder\WebDavRootDirectory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Root
@@ -53,6 +54,16 @@ class Root {
 			$mounts,
 			self::getFileAbstractionFolders(),
 			'FAL'
+		);
+
+		/** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
+		$signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
+		$signalSlotDispatcher->dispatch(
+			__CLASS__,
+			__METHOD__,
+			array(
+				'mounts' => &$mounts
+			)
 		);
 
 		return $mounts;
