@@ -5,7 +5,7 @@ namespace KayStrobach\Webdav\WebDav\Nodes\Fal;
 
 use KayStrobach\Webdav\WebDav\Nodes\Fal\Folder;
 
-class Storage extends \Sabre_DAV_SimpleCollection {
+class Storage extends \Sabre_DAV_SimpleCollection implements \Sabre_DAV_ICollection{
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
 	 */

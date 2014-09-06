@@ -30,6 +30,12 @@ class File extends \Sabre_DAV_File {
 		$this->file = $file;
 	}
 
+	/**
+	 * deletes a file
+	 */
+	public function delete() {
+		$this->file->delete();
+	}
 
 	/**
 	 * Updates the data
@@ -88,5 +94,15 @@ class File extends \Sabre_DAV_File {
 	public function getContentType() {
 		return $this->file->getMimeType();
 	}
+
+	/**
+	 * sets the name of the file
+	 *
+	 * @param string $name
+	 */
+	public function setName($name) {
+		$this->folder->setName($name);
+	}
+
 
 }
