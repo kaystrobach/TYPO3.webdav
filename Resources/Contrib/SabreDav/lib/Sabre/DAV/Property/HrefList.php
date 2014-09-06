@@ -3,35 +3,35 @@
 /**
  * HrefList property
  *
- * This property contains multiple {DAV:}href elements, each containing a url. 
- * 
+ * This property contains multiple {DAV:}href elements, each containing a url.
+ *
  * @package Sabre
  * @subpackage DAV
- * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
- * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
+ * @copyright Copyright (C) 2007-2014 fruux GmbH (https://fruux.com/).
+ * @author Evert Pot (http://evertpot.com/)
+ * @license http://sabre.io/license/ Modified BSD License
  */
 class Sabre_DAV_Property_HrefList extends Sabre_DAV_Property {
 
     /**
-     * hrefs 
-     * 
-     * @var array 
+     * hrefs
+     *
+     * @var array
      */
     private $hrefs;
 
     /**
-     * Automatically prefix the url with the server base directory 
-     * 
-     * @var bool 
+     * Automatically prefix the url with the server base directory
+     *
+     * @var bool
      */
     private $autoPrefix = true;
 
     /**
-     * __construct 
-     * 
+     * __construct
+     *
      * @param array $hrefs
-     * @param bool $autoPrefix 
+     * @param bool $autoPrefix
      */
     public function __construct(array $hrefs, $autoPrefix = true) {
 
@@ -41,9 +41,9 @@ class Sabre_DAV_Property_HrefList extends Sabre_DAV_Property {
     }
 
     /**
-     * Returns the uris 
-     * 
-     * @return array 
+     * Returns the uris
+     *
+     * @return array
      */
     public function getHrefs() {
 
@@ -55,9 +55,9 @@ class Sabre_DAV_Property_HrefList extends Sabre_DAV_Property {
      * Serializes this property.
      *
      * It will additionally prepend the href property with the server's base uri.
-     * 
-     * @param Sabre_DAV_Server $server 
-     * @param DOMElement $dom 
+     *
+     * @param Sabre_DAV_Server $server
+     * @param DOMElement $dom
      * @return void
      */
     public function serialize(Sabre_DAV_Server $server,DOMElement $dom) {
@@ -65,21 +65,28 @@ class Sabre_DAV_Property_HrefList extends Sabre_DAV_Property {
         $prefix = $server->xmlNamespaces['DAV:'];
 
         foreach($this->hrefs as $href) {
+
             $elem = $dom->ownerDocument->createElement($prefix . ':href');
-            $elem->nodeValue = ($this->autoPrefix?$server->getBaseUri():'') . $href;
+            if ($this->autoPrefix) {
+                $value = $server->getBaseUri() . Sabre_DAV_URLUtil::encodePath($href);
+            } else {
+                $value = $href;
+            }
+            $elem->appendChild($dom->ownerDocument->createTextNode($value));
+
             $dom->appendChild($elem);
         }
 
     }
 
     /**
-     * Unserializes this property from a DOM Element 
+     * Unserializes this property from a DOM Element
      *
      * This method returns an instance of this class.
      * It will only decode {DAV:}href values.
      *
-     * @param DOMElement $dom 
-     * @return Sabre_DAV_Property_Href 
+     * @param DOMElement $dom
+     * @return Sabre_DAV_Property_HrefList
      */
     static function unserialize(DOMElement $dom) {
 
@@ -91,6 +98,6 @@ class Sabre_DAV_Property_HrefList extends Sabre_DAV_Property {
         }
         return new self($hrefs, false);
 
-    } 
+    }
 
 }

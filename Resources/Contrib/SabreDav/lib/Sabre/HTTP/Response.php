@@ -1,23 +1,34 @@
 <?php
 
 /**
- * Sabre_HTTP_Response 
- * 
+ * Sabre_HTTP_Response
+ *
  * @package Sabre
- * @subpackage HTTP 
- * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
- * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
+ * @subpackage HTTP
+ * @copyright Copyright (C) 2007-2014 fruux GmbH (https://fruux.com/).
+ * @author Evert Pot (http://evertpot.com/)
+ * @license http://sabre.io/license/ Modified BSD License
  */
 class Sabre_HTTP_Response {
 
     /**
-     * Returns a full HTTP status message for an HTTP status code 
-     * 
-     * @param int $code 
+     * The HTTP version to return in the header() line.
+     *
+     * By default you will definitely want this to be HTTP/1.1, but in some
+     * edge cases (most notably pre 1.2 nginx servers acting as a proxy), you
+     * want to force this to 1.0.
+     *
+     * @var string
+     */
+    public $defaultHttpVersion = '1.1';
+
+    /**
+     * Returns a full HTTP status message for an HTTP status code
+     *
+     * @param int $code
      * @return string
      */
-    public function getStatusMessage($code) {
+    public function getStatusMessage($code, $httpVersion = '1.1') {
 
         $msg = array(
             100 => 'Continue',
@@ -64,6 +75,9 @@ class Sabre_HTTP_Response {
             423 => 'Locked', // RFC 4918
             424 => 'Failed Dependency', // RFC 4918
             426 => 'Upgrade required',
+            428 => 'Precondition required', // draft-nottingham-http-new-status
+            429 => 'Too Many Requests', // draft-nottingham-http-new-status
+            431 => 'Request Header Fields Too Large', // draft-nottingham-http-new-status
             500 => 'Internal Server Error',
             501 => 'Not Implemented',
             502 => 'Bad Gateway',
@@ -71,52 +85,59 @@ class Sabre_HTTP_Response {
             504 => 'Gateway Timeout',
             505 => 'HTTP Version not supported',
             506 => 'Variant Also Negotiates',
-            507 => 'Unsufficient Storage', // RFC 4918
+            507 => 'Insufficient Storage', // RFC 4918
             508 => 'Loop Detected', // RFC 5842
             509 => 'Bandwidth Limit Exceeded', // non-standard
             510 => 'Not extended',
-       ); 
+            511 => 'Network Authentication Required', // draft-nottingham-http-new-status
+       );
 
-       return 'HTTP/1.1 ' . $code . ' ' . $msg[$code];
+       return 'HTTP/' . $httpVersion . ' ' . $code . ' ' . $msg[$code];
 
     }
 
+    // @codeCoverageIgnoreStart
+    // We cannot reasonably test header() related methods.
+
     /**
-     * Sends an HTTP status header to the client 
-     * 
-     * @param int $code HTTP status code 
-     * @return void
+     * Sends an HTTP status header to the client.
+     *
+     * @param int $code HTTP status code
+     * @return bool
      */
     public function sendStatus($code) {
 
-        if (!headers_sent()) 
-            return header($this->getStatusMessage($code));
+        if (!headers_sent())
+            return header($this->getStatusMessage($code, $this->defaultHttpVersion));
         else return false;
 
     }
 
     /**
      * Sets an HTTP header for the response
-     * 
-     * @param string $name 
-     * @param string $value 
-     * @return void
+     *
+     * @param string $name
+     * @param string $value
+     * @param bool $replace
+     * @return bool
      */
     public function setHeader($name, $value, $replace = true) {
 
         $value = str_replace(array("\r","\n"),array('\r','\n'),$value);
-        if (!headers_sent()) 
+        if (!headers_sent())
             return header($name . ': ' . $value, $replace);
         else return false;
 
+
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * Sets a bunch of HTTP Headers
      *
      * headersnames are specified as keys, value in the array value
-     * 
-     * @param array $headers 
+     *
+     * @param array $headers
      * @return void
      */
     public function setHeaders(array $headers) {
@@ -130,15 +151,15 @@ class Sabre_HTTP_Response {
      * Sends the entire response body
      *
      * This method can accept either an open filestream, or a string.
-     * 
-     * @param mixed $body 
+     *
+     * @param mixed $body
      * @return void
      */
     public function sendBody($body) {
 
         if (is_resource($body)) {
-        
-            fpassthru($body);
+
+            file_put_contents('php://output', $body);
 
         } else {
 
