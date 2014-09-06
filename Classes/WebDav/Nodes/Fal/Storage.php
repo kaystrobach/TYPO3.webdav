@@ -36,6 +36,23 @@ class Storage extends \Sabre_DAV_SimpleCollection {
 		return $name;
 	}
 
+	public function getAlias() {
+		return $this->getName();
+	}
+
+	public function log($message) {
+		$GLOBALS['BE_USER']->writelog(
+			255,
+			2,
+			0,
+			1,
+			'Message: %s',
+			array(
+				$message
+			)
+		);
+	}
+
 	/**
 	 * @return array|void
 	 */
@@ -50,12 +67,14 @@ class Storage extends \Sabre_DAV_SimpleCollection {
 			$collection[] = $f = new Folder($folder->getName());
 			$f->setStorage($this->storage);
 			$f->setFolder($folder);
+			$this->log('FOLDER:' . $folder->getCombinedIdentifier() . ' - ' . $f->getName());
 		}
 
 		$files = $this->folder->getFiles();
 		foreach($files as $file) {
 			$collection[] = $f = new File();
 			$f->setFalFileObject($file);
+			$this->log('FILE:' . $file->getCombinedIdentifier() . ' - ' . $file->getName());
 		}
 
 		return $collection;
