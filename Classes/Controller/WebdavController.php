@@ -83,7 +83,7 @@ class WebdavController {
 			$base      = dirname(dirname($this->baseUri)) == '/' ? '/' : dirname(dirname($this->baseUri)) . '/';
 			$extRoot   = $base . ExtensionManagementUtility::siteRelPath('webdav');
 			$typo3root = $base . 'typo3/';
-			$view = GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
+			$view = GeneralUtility::makeInstance('TYPO3\CMS\Fluid\View\StandaloneView');
 			$view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('webdav') . 'Resources/Public/Templates/accessdenied.html');
 				//asign
 			$view->assign('extRoot', $extRoot);

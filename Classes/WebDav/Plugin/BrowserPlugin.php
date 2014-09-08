@@ -44,7 +44,7 @@ class BrowserPlugin extends \Sabre_DAV_Browser_Plugin {
 		}
 
 		// Render template with fluid
-		$view = GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
+		$view = GeneralUtility::makeInstance('TYPO3\CMS\Fluid\View\StandaloneView');
 		$view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('webdav') . 'Resources/Public/Templates/filelist.html');
 
 		//asign
