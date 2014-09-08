@@ -91,3 +91,12 @@ Connect with a share:
 net use <CHAR>: https://<HOST>/index.php/dav /user:<BE_USER> [PASSWORD]
 net use B: https://your.host.tld/index.php/dav /user:beuser bepassword
 ```
+
+# References
+
+* Sächsischer Bildungsserver Schulcms
+http://cms.sn.schule.de
+* DRK Kreisverband Dresden e.V.
+http://www.drk-dresden.de
+* Bayerische Staatsbibliothek
+http://www.bsb-muenchen.de/
