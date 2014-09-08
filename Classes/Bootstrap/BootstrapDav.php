@@ -26,8 +26,8 @@ class BootstrapDav {
 	 * @return void
 	 */
 	public function registerAutoloader($className) {
-		if (strpos($className,'Sabre_') === 0) {
-			include (self::getSabeDavBaseDir() . str_replace('_', '/', substr($className, 6)) . '.php');
+		if (strpos($className, 'Sabre_') === 0) {
+			require_once (self::getSabeDavBaseDir() . str_replace('_', '/', substr($className, 6)) . '.php');
 		}
 	}
 

@@ -41,7 +41,7 @@ class Folder extends Storage {
 	 *
 	 * @param string $name
 	 * @param null $data
-	 * @return null|string|void
+	 * @return void
 	 */
 	public function createFile($name, $data = NULL) {
 		$file = $this->folder->createFile($name);

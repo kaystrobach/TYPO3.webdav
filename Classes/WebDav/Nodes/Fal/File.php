@@ -76,6 +76,7 @@ class File extends \Sabre_DAV_File {
 		return $this->file->getSize();
 	}
 
+	// @codingStandardsIgnoreStart
 	/**
 	 * Returns the ETag for a file
 	 *
@@ -84,11 +85,15 @@ class File extends \Sabre_DAV_File {
 	 *
 	 * Return null if the ETag can not effectively be determined
 	 *
+	 * The function name is defined by SabreDav, so no way to fit the TYPO3 CGL ...
+	 *
 	 * @return string|null
 	 */
 	public function getETag() {
 		return $this->file->getSha1();
 	}
+	// @codingStandardsIgnoreEnd
+
 
 	/**
 	 * Returns the mime-type for a file
