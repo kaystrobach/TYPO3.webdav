@@ -2,7 +2,13 @@
 
 namespace KayStrobach\Webdav\WebDav\Nodes\Fal;
 
-
+/**
+ * Class File
+ *
+ * Represens a FAL file in webdav server
+ *
+ * @package KayStrobach\Webdav\WebDav\Nodes\Fal
+ */
 class File extends \Sabre_DAV_File {
 	/**
 	 * @var string
@@ -19,7 +25,7 @@ class File extends \Sabre_DAV_File {
 	 *
 	 * @return string
 	 */
-	function getName() {
+	public function getName() {
 		return $this->file->getName();
 	}
 
