@@ -32,13 +32,16 @@ class Bootstrap {
 	 */
 	public static function initBackendUser() {
 		// New backend user object
-		$GLOBALS['BE_USER'] = GeneralUtility::makeInstance('t3lib_tsfeBeUserAuth');
-		$GLOBALS['BE_USER']->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-		$GLOBALS['BE_USER']->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
-		$GLOBALS['BE_USER']->auth_timeout_field = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
-		$GLOBALS['BE_USER']->OS = TYPO3_OS;
-		$GLOBALS['BE_USER']->start();
-		$GLOBALS['BE_USER']->unpack_uc('');
+		/** @var \t3lib_tsfeBeUserAuth $beUser */
+		$beUser = GeneralUtility::makeInstance('t3lib_tsfeBeUserAuth');
+		$beUser->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
+		$beUser->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
+		$beUser->auth_timeout_field = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
+		$beUser->OS = TYPO3_OS;
+		$beUser->start();
+		$beUser->unpack_uc('');
+		$beUser->fetchGroupData();
+		$GLOBALS['BE_USER'] = $beUser;
 	}
 
 	/**
