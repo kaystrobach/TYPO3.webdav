@@ -9,6 +9,7 @@
 namespace KayStrobach\Webdav\WebDav\FileSystem;
 
 
+use KayStrobach\Webdav\WebDav\Nodes\Fal\Folder;
 use KayStrobach\Webdav\WebDav\Nodes\Fal\Storage;
 use KayStrobach\Webdav\WebDav\Nodes\Folder\WebDavRootDirectory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -196,14 +197,22 @@ class Root {
 	 * @return array
 	 */
 	public static function getFileAbstractionFolders() {
-		/** @var  $fileMount \TYPO3\CMS\Core\Resource\ResourceStorage */
-		$fileMounts = $GLOBALS['BE_USER']->getFileStorages();
+		/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+		$fileMounts = $GLOBALS['BE_USER']->getFileMountRecords();
+		$storages = $GLOBALS['BE_USER']->getFileStorages();
 		//--------------------------------------------------------------------------
 		// create virtual directories for the filemounts in typo3
 		$mounts = array();
 		foreach ($fileMounts as $fileMount) {
-			$mounts[] = $m = new Storage($fileMount->getName());
-			$m->setStorage($fileMount);
+			$storage = $storages[$fileMount['base']];
+			try {
+				$m = new Folder($fileMount['title']);
+				$m->setStorage($storage);
+				$m->setFolder($storage->getFolder($fileMount['path']));
+				$mounts[] = $m;
+			} catch(\Exception $e) {
+				// do not add folder to list
+			}
 		}
 		return $mounts;
 	}
