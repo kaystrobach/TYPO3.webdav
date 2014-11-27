@@ -198,8 +198,11 @@ class Root {
 	 */
 	public static function getFileAbstractionFolders() {
 		/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
-		$fileMounts = $GLOBALS['BE_USER']->getFileMountRecords();
-		$storages = $GLOBALS['BE_USER']->getFileStorages();
+		/** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser */
+		$beUser = $GLOBALS['BE_USER'];
+		$beUser->fetchGroupData();
+		$fileMounts = $beUser->getFileMountRecords();
+		$storages = $beUser->getFileStorages();
 		//--------------------------------------------------------------------------
 		// create virtual directories for the filemounts in typo3
 		$mounts = array();
