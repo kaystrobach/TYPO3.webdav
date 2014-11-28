@@ -16,8 +16,6 @@ use KayStrobach\Webdav\WebDav\Nodes\Fal\Storage;
 use KayStrobach\Webdav\WebDav\Nodes\Folder\WebDavRootDirectory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-ini_set('display_errors', 1);
-
 /**
  * Class Root
  *
