@@ -10,9 +10,13 @@ namespace KayStrobach\Webdav\WebDav\FileSystem;
 
 
 use KayStrobach\Webdav\WebDav\Nodes\Fal\Folder;
+use KayStrobach\Webdav\WebDav\Nodes\Fal\Home\GroupHome;
+use KayStrobach\Webdav\WebDav\Nodes\Fal\Home\UserHome;
 use KayStrobach\Webdav\WebDav\Nodes\Fal\Storage;
 use KayStrobach\Webdav\WebDav\Nodes\Folder\WebDavRootDirectory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+ini_set('display_errors', 1);
 
 /**
  * Class Root
@@ -135,33 +139,34 @@ class Root {
 				$mounts[] = $m = new WebDavRootDirectory(PATH_site . 'fileadmin/templates/');
 				$m->setName('T3 - fileadmin - templates');
 			}
+			//------------------------------------------------------------------
+			// add group home path
+			$mounts[] = self::getGroupHomes();
+
+			//------------------------------------------------------------------
+			// add user home path
+			$mounts[] = self::getUserHomes();
+
 		}
 		return $mounts;
 	}
 
 	/**
 	 * Returns the grouphomes, instead of the uids
-	 *
-	 * @return array
 	 */
 	public static function getGroupHomes() {
-		$groupDirs     = array();
-		if (is_dir($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'])) {
-			$groupDirArray = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-					'uid,title',
-					'be_groups',
-					'',
-					'',
-					'title'
-			);
-			foreach ($groupDirArray as $groupDir) {
-				if (is_dir($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] . '/' . $groupDir['uid'])) {
-					$groupDirs[] = $m = new WebDavRootDirectory($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] . '/' . $groupDir['uid']);
-					$m->setName($groupDir['title']);
-				}
-			}
-		}
-		return $groupDirs;
+		/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+		/** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser */
+		$beUser = $GLOBALS['BE_USER'];
+		$storages = $beUser->getFileStorages();
+
+		list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
+		$storage = $storages[$groupHomeStorageUid];
+
+		$m = new GroupHome('T3 - GroupHome');
+		$m->setStorage($storages[$groupHomeStorageUid]);
+		$m->setFolder($storage->getFolder($groupHomeFilter));
+		return $m;
 	}
 
 	/**
@@ -170,25 +175,19 @@ class Root {
 	 * @return array
 	 */
 	public static function getUserHomes() {
-		$userDirs     = array();
-		if (is_dir($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'])) {
-			$userDirArray = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-					'uid,username',
-					'be_users',
-					'',
-					'',
-					'username'
-			);
+		/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+		/** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser */
+		$beUser = $GLOBALS['BE_USER'];
+		$storages = $beUser->getFileStorages();
 
-			foreach ($userDirArray as $userDir) {
-				if (is_dir($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'] . '/' . $userDir['uid'])) {
-					$userDirs[] = $m = new WebDavRootDirectory($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'] . '/' . $userDir['uid']);
-					$m->setName($userDir['username']);
-				}
-			}
-			unset($userDirArray);
-		}
-		return $userDirs;
+		list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
+		$storage = $storages[$userHomeStorageUid];
+
+		$m = new UserHome('T3 - UserHome');
+		$m->setStorage($storages[$userHomeStorageUid]);
+		$m->setFolder($storage->getFolder($userHomeFilter));
+		return $m;
+
 	}
 
 	/**
