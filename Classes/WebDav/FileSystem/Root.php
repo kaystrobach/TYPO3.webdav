@@ -139,11 +139,19 @@ class Root {
 			}
 			//------------------------------------------------------------------
 			// add group home path
-			$mounts[] = self::getGroupHomes();
+
+			$groupHome = self::getGroupHomes();
+			if($groupHome !== NULL) {
+				$mounts[] = $groupHome;
+			}
 
 			//------------------------------------------------------------------
 			// add user home path
-			$mounts[] = self::getUserHomes();
+			$userHome = self::getUserHomes();
+			if($userHome !== NULL) {
+				$mounts[] = $userHome;
+
+			}
 
 		}
 		return $mounts;
@@ -161,10 +169,12 @@ class Root {
 		list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
 		$storage = $storages[$groupHomeStorageUid];
 
-		$m = new GroupHome('T3 - GroupHome');
-		$m->setStorage($storages[$groupHomeStorageUid]);
-		$m->setFolder($storage->getFolder($groupHomeFilter));
-		return $m;
+		if(array_key_exists($groupHomeStorageUid, $storages)) {
+			$m = new GroupHome('T3 - GroupHome');
+			$m->setStorage($storages[$groupHomeStorageUid]);
+			$m->setFolder($storage->getFolder($groupHomeFilter));
+			return $m;
+		}
 	}
 
 	/**
@@ -181,10 +191,13 @@ class Root {
 		list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
 		$storage = $storages[$userHomeStorageUid];
 
-		$m = new UserHome('T3 - UserHome');
-		$m->setStorage($storages[$userHomeStorageUid]);
-		$m->setFolder($storage->getFolder($userHomeFilter));
-		return $m;
+		if(array_key_exists($userHomeStorageUid, $storages)) {
+			$m = new UserHome('T3 - UserHome');
+			$m->setStorage($storages[$userHomeStorageUid]);
+			$m->setFolder($storage->getFolder($userHomeFilter));
+			return $m;
+		}
+
 
 	}
 
