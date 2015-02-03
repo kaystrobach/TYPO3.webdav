@@ -115,5 +115,14 @@ class File extends \Sabre_DAV_File {
 		$this->folder->setName($name);
 	}
 
-
+	/**
+	 * Returns the last modification time
+	 *
+	 * In this case, it will simply return the current time
+	 *
+	 * @return int
+	 */
+	public function getLastModified() {
+		return $this->file->getModificationTime();
+	}
 }
