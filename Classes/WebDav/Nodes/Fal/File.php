@@ -112,7 +112,7 @@ class File extends \Sabre_DAV_File {
 	 * @param string $name
 	 */
 	public function setName($name) {
-		$this->file->setName($name);
+		$this->file->rename($name);
 	}
 
 	/**
