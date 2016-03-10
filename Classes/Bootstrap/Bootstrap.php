@@ -20,7 +20,7 @@ class Bootstrap {
 		if (is_null($GLOBALS['TSFE']->sys_page)) {
 
 			// needed to get the abstract repo call for enable fields working
-			$GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
+			//$GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
 		}
 	}
 
@@ -32,8 +32,8 @@ class Bootstrap {
 	 */
 	public static function initBackendUser() {
 		// New backend user object
-		/** @var \t3lib_tsfeBeUserAuth $beUser */
-		$beUser = GeneralUtility::makeInstance('t3lib_tsfeBeUserAuth');
+		/** @var \TYPO3\CMS\Backend\FrontendBackendUserAuthentication $beUser */
+		$beUser = GeneralUtility::makeInstance('TYPO3\CMS\Backend\FrontendBackendUserAuthentication');
 		$beUser->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 		$beUser->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
 		$beUser->auth_timeout_field = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);

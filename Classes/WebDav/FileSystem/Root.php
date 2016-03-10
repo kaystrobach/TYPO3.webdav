@@ -121,7 +121,7 @@ class Root {
 			}
 			//------------------------------------------------------------------
 			// add typo3 folder
-			if (is_dir(PATH_typo3conf)) {
+			if (is_dir(PATH_tslib)) {
 				$mounts[] = $m = new WebDavRootDirectory(PATH_tslib);
 				$m->setName('T3 - PATH_tslib');
 			}
