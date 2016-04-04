@@ -55,6 +55,6 @@ class Folder extends Storage {
 	 * @return void
 	 */
 	public function setName($name) {
-		$this->folder->setName($name);
+		$this->folder->rename($name);
 	}
 }

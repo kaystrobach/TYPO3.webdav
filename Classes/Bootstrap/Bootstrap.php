@@ -16,11 +16,22 @@ class Bootstrap {
 	 * @return void
 	 */
 	public static function initTcaAndTsfe() {
+		$GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+			$GLOBALS['$TYPO3_CONF_VARS'],
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type'),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash'),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl'),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP'),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')
+		);
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
-		if (is_null($GLOBALS['TSFE']->sys_page)) {
-
+		if (! ($GLOBALS['TSFE']->sys_page instanceof  \TYPO3\CMS\Frontend\Page\PageRepository)) {
 			// needed to get the abstract repo call for enable fields working
-			//$GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
+			$GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
+			$GLOBALS['TSFE']->sys_page->init(TRUE);
 		}
 	}
 
