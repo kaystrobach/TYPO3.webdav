@@ -58,7 +58,8 @@ class PermissionPlugin extends \Sabre_DAV_ServerPlugin {
 		//check path in mount rules
 
 		// explode by dot and get last chars after dot as extension
-		$ext = array_pop(explode('.', $path));
+		$pathComponents = explode('.', $path);
+        $ext = array_pop($pathComponents);
 		// check if it is allowed to change a specific file
 		if (!$t3File->checkIfAllowed($ext, dirname($path), basename($path))) {
 			throw new \Sabre_DAV_Exception_Forbidden('File extension "' . $ext . '" not allowed');
